@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriShop — Détail Produit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product-detail.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">Afri<span>Shop</span></a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="product.html">Produits</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search">🔍</button>
+                <button class="btn-wishlist">❤️</button>
+                <button class="btn-cart">🛒 <span id="cart-count">0</span></button>
+                <a href="account.html" class="btn-account">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a href="index.html">Accueil</a> /
+        <a href="product.html">Produits</a> /
+        <span id="breadcrumb-name">Produit</span>
+    </div>
+
+    <!-- DETAIL PRODUIT -->
+    <div class="detail-layout">
+
+        <!-- IMAGES -->
+        <div class="detail-images">
+            <div class="main-img" id="main-img">🎧</div>
+            <div class="thumbnails">
+                <div class="thumb active" onclick="setImg(this, '🎧')">🎧</div>
+                <div class="thumb" onclick="setImg(this, '📦')">📦</div>
+                <div class="thumb" onclick="setImg(this, '⭐')">⭐</div>
+            </div>
+        </div>
+
+        <!-- INFOS -->
+        <div class="detail-info">
+            <div class="detail-badges">
+                <span class="badge-local" id="detail-badge">Local</span>
+                <span class="badge-stock">En stock</span>
+            </div>
+            <h1 id="detail-name">Nom du produit</h1>
+            <div class="detail-origin" id="detail-origin">Origine</div>
+
+            <div class="detail-stars">
+                ★★★★☆ <span>4.2 (38 avis)</span>
+            </div>
+
+            <div class="detail-price-row">
+                <span class="detail-price" id="detail-price">0 F</span>
+                <span class="detail-old-price">-</span>
+                <span class="detail-save">-20%</span>
+            </div>
+
+            <!-- TAILLE -->
+            <div class="option-label">Taille</div>
+            <div class="sizes">
+                <button class="size-btn" onclick="selectSize(this)">S</button>
+                <button class="size-btn active" onclick="selectSize(this)">M</button>
+                <button class="size-btn" onclick="selectSize(this)">L</button>
+                <button class="size-btn" onclick="selectSize(this)">XL</button>
+            </div>
+
+            <!-- QUANTITE -->
+            <div class="qty-row">
+                <span class="option-label">Quantité</span>
+                <div class="qty-ctrl">
+                    <button onclick="changeQty(-1)">−</button>
+                    <span id="qty-val">1</span>
+                    <button onclick="changeQty(1)">+</button>
+                </div>
+            </div>
+
+            <!-- BOUTONS -->
+            <button class="btn-primary btn-full" onclick="addToCartDetail()">
+                🛒 Ajouter au panier
+            </button>
+            <button class="btn-secondary btn-full" onclick="addToWish()">
+                ❤️ Ajouter aux favoris
+            </button>
+
+            <!-- LIVRAISON -->
+            <div class="delivery-info">
+                <div class="delivery-row">🚚 Livraison Dakar : aujourd'hui ou demain</div>
+                <div class="delivery-row">🌍 Livraison internationale disponible</div>
+                <div class="delivery-row">🔄 Retours gratuits sous 7 jours</div>
+                <div class="delivery-row">🛡️ Produit authentique garanti</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-section">
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('desc')">Description</div>
+            <div class="tab" onclick="showTab('specs')">Caractéristiques</div>
+            <div class="tab" onclick="showTab('reviews')">Avis clients (38)</div>
+        </div>
+
+        <div class="tab-content" id="tab-desc">
+            <p id="detail-desc">Description du produit...</p>
+            <ul class="desc-list">
+                <li>✅ Qualité premium garantie</li>
+                <li>✅ Livraison rapide depuis Dakar</li>
+                <li>✅ Retours gratuits sous 7 jours</li>
+                <li>✅ Paiement sécurisé</li>
+            </ul>
+        </div>
+
+        <div class="tab-content" id="tab-specs" style="display:none">
+            <table class="specs-table">
+                <tr><td>Origine</td><td id="spec-origin">-</td></tr>
+                <tr><td>Catégorie</td><td id="spec-cat">-</td></tr>
+                <tr><td>Disponibilité</td><td>En stock</td></tr>
+                <tr><td>Livraison</td><td>Dakar & international</td></tr>
+                <tr><td>Retours</td><td>7 jours gratuits</td></tr>
+            </table>
+        </div>
+
+        <div class="tab-content" id="tab-reviews" style="display:none">
+            <div class="reviews">
+                <div class="review">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="avatar">AM</div>
+                            <div>
+                                <div class="reviewer-name">Aminata M.</div>
+                                <div class="reviewer-loc">Dakar, Sénégal</div>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★★</div>
+                    </div>
+                    <p class="review-text">Superbe qualité ! Je recommande vivement AfriShop.</p>
+                    <div class="review-date">Il y a 3 jours</div>
+                </div>
+                <div class="review">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="avatar">OD</div>
+                            <div>
+                                <div class="reviewer-name">Ousmane D.</div>
+                                <div class="reviewer-loc">Paris, France</div>
+                            </div>
+                        </div>
+                        <div class="review-stars">★★★★☆</div>
+                    </div>
+                    <p class="review-text">Commande reçue à Paris en 8 jours. Très content !</p>
+                    <div class="review-date">Il y a 1 semaine</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUITS SIMILAIRES -->
+    <div class="related-section">
+        <h3>Vous aimerez aussi</h3>
+        <div class="products-grid" id="related-grid"></div>
+    </div>
+
+    <script src="js/main.js"></script>
+<script src="js/product-detail.js"></script>
+<script src="js/currency.js"></script>
+</body>
+</html>

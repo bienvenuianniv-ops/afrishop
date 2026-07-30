@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriShop — Connexion</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">Afri<span>Shop</span></a></div>
+            <div class="nav-actions">
+                <button class="btn-cart">🛒 <span id="cart-count">0</span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LOGIN CONTAINER -->
+    <div class="auth-container">
+
+        <!-- TABS -->
+        <div class="auth-tabs">
+            <div class="auth-tab active" onclick="switchTab('login')">
+                Se connecter
+            </div>
+            <div class="auth-tab" onclick="switchTab('register')">
+                Créer un compte
+            </div>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div class="auth-form" id="login-form">
+            <div class="auth-header">
+                <div class="auth-icon">👤</div>
+                <h2>Bon retour !</h2>
+                <p>Connectez-vous à votre compte AfriShop</p>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="login-email" placeholder="email@exemple.com">
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <div class="password-wrap">
+                    <input type="password" id="login-password" placeholder="••••••••">
+                    <button class="toggle-pwd" onclick="togglePwd('login-password')">👁️</button>
+                </div>
+            </div>
+
+            <div class="form-options">
+                <label class="remember">
+                    <input type="checkbox"> Se souvenir de moi
+                </label>
+                <a href="#" class="forgot">Mot de passe oublié ?</a>
+            </div>
+
+            <div id="login-error" class="auth-error"></div>
+
+            <button class="btn-primary btn-full-auth" onclick="login()">
+                Se connecter
+            </button>
+
+            <div class="auth-divider"><span>ou</span></div>
+
+            <div class="social-btns">
+                <button class="btn-social" onclick="showNotif('Connexion Google bientôt disponible !')">
+                    🌐 Continuer avec Google
+                </button>
+                <button class="btn-social" onclick="showNotif('Connexion Facebook bientôt disponible !')">
+                    📘 Continuer avec Facebook
+                </button>
+            </div>
+
+            <p class="auth-switch">
+                Pas encore de compte ?
+                <a onclick="switchTab('register')">Créer un compte →</a>
+            </p>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div class="auth-form" id="register-form" style="display:none">
+            <div class="auth-header">
+                <div class="auth-icon">✨</div>
+                <h2>Rejoignez AfriShop !</h2>
+                <p>Créez votre compte gratuitement</p>
+            </div>
+
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label>Prénom</label>
+                    <input type="text" id="reg-prenom" placeholder="Mamadou">
+                </div>
+                <div class="form-group">
+                    <label>Nom</label>
+                    <input type="text" id="reg-nom" placeholder="Diallo">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="reg-email" placeholder="email@exemple.com">
+            </div>
+            <div class="form-group">
+                <label>Téléphone</label>
+                <input type="tel" id="reg-tel" placeholder="+221 77 000 00 00">
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <div class="password-wrap">
+                    <input type="password" id="reg-password" placeholder="Minimum 6 caractères">
+                    <button class="toggle-pwd" onclick="togglePwd('reg-password')">👁️</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirmer le mot de passe</label>
+                <div class="password-wrap">
+                    <input type="password" id="reg-confirm" placeholder="••••••••">
+                    <button class="toggle-pwd" onclick="togglePwd('reg-confirm')">👁️</button>
+                </div>
+            </div>
+
+            <div id="register-error" class="auth-error"></div>
+            <div id="register-success" class="auth-success"></div>
+
+            <button class="btn-primary btn-full-auth" onclick="register()">
+                Créer mon compte
+            </button>
+
+            <p class="auth-switch">
+                Déjà un compte ?
+                <a onclick="switchTab('login')">Se connecter →</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/login.js"></script>
+
+</body>
+</html>

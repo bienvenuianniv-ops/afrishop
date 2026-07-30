@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriShop — Commande</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/checkout.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">Afri<span>Shop</span></a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="product.html">Produits</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-cart">🛒 <span id="cart-count">0</span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- STEPS -->
+    <div class="checkout-steps">
+        <div class="step done">
+            <div class="step-num">✓</div>
+            <span>Panier</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step active">
+            <div class="step-num">2</div>
+            <span>Livraison</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <span>Paiement</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <span>Confirmation</span>
+        </div>
+    </div>
+
+    <!-- CHECKOUT LAYOUT -->
+    <div class="checkout-layout">
+
+        <!-- FORMULAIRE -->
+        <div class="checkout-form">
+
+            <!-- LIVRAISON -->
+            <div class="form-section">
+                <h3>📍 Adresse de livraison</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prénom</label>
+                        <input type="text" id="prenom" placeholder="Mamadou">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" id="nom" placeholder="Diallo">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="tel" id="tel" placeholder="+221 77 000 00 00">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="email@exemple.com">
+                </div>
+                <div class="form-group">
+                    <label>Pays</label>
+                    <select id="pays" onchange="updateDelivery(this.value)">
+                        <option value="sn">🇸🇳 Sénégal</option>
+                        <option value="fr">🇫🇷 France</option>
+                        <option value="us">🇺🇸 États-Unis</option>
+                        <option value="ci">🇨🇮 Côte d'Ivoire</option>
+                        <option value="ca">🇨🇦 Canada</option>
+                        <option value="it">🇮🇹 Italie</option>
+                        <option value="de">🇩🇪 Allemagne</option>
+                        <option value="ml">🇲🇱 Mali</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Adresse complète</label>
+                    <input type="text" id="adresse" placeholder="Rue, quartier, ville...">
+                </div>
+            </div>
+
+            <!-- LIVRAISON OPTIONS -->
+            <div class="form-section">
+                <h3>🚚 Mode de livraison</h3>
+                <div class="delivery-options" id="delivery-options"></div>
+            </div>
+
+            <!-- PAIEMENT -->
+            <div class="form-section">
+                <h3>💳 Mode de paiement</h3>
+                <div class="pay-options">
+                    <label class="pay-option selected" onclick="selectPay(this, 'wave')">
+                        <input type="radio" name="pay" checked>
+                        <span class="pay-icon">📱</span>
+                        <div class="pay-label">
+                            <div class="pay-name">Wave</div>
+                            <div class="pay-sub">Paiement mobile instantané</div>
+                        </div>
+                        <span class="pay-badge">Populaire</span>
+                    </label>
+                    <label class="pay-option" onclick="selectPay(this, 'orange')">
+                        <input type="radio" name="pay">
+                        <span class="pay-icon">🟠</span>
+                        <div class="pay-label">
+                            <div class="pay-name">Orange Money</div>
+                            <div class="pay-sub">Disponible partout au Sénégal</div>
+                        </div>
+                    </label>
+                    <label class="pay-option" onclick="selectPay(this, 'card')">
+                        <input type="radio" name="pay">
+                        <span class="pay-icon">💳</span>
+                        <div class="pay-label">
+                            <div class="pay-name">Carte bancaire</div>
+                            <div class="pay-sub">Visa, Mastercard</div>
+                        </div>
+                        <span class="pay-badge">International</span>
+                    </label>
+                    <label class="pay-option" onclick="selectPay(this, 'paypal')">
+                        <input type="radio" name="pay">
+                        <span class="pay-icon">🅿️</span>
+                        <div class="pay-label">
+                            <div class="pay-name">PayPal</div>
+                            <div class="pay-sub">Paiement sécurisé en ligne</div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- CHAMPS PAIEMENT -->
+                <div class="pay-fields" id="pay-fields">
+                    <label>Numéro Wave</label>
+                    <input type="tel" placeholder="+221 77 000 00 00">
+                </div>
+
+                <button class="btn-primary btn-confirm" onclick="confirmOrder()">
+                    🔒 Confirmer et payer
+                </button>
+                <div class="secure-note">
+                    🛡️ Paiement 100% sécurisé — chiffrement SSL
+                </div>
+            </div>
+        </div>
+
+        <!-- RÉSUMÉ COMMANDE -->
+        <div class="checkout-summary">
+            <h3>🛍️ Résumé de commande</h3>
+            <div class="cart-items" id="cart-items"></div>
+            <div class="summary-lines">
+                <div class="summary-line">
+                    <span>Sous-total</span>
+                    <span id="subtotal">0 F</span>
+                </div>
+                <div class="summary-line">
+                    <span>Livraison</span>
+                    <span id="delivery-price">0 F</span>
+                </div>
+                <div class="summary-line total">
+                    <span>Total</span>
+                    <span id="total">0 F</span>
+                </div>
+            </div>
+
+            <!-- CODE PROMO -->
+            <div class="promo-section">
+                <input type="text" id="promo-input" placeholder="Code promo..." 
+                       oninput="this.value=this.value.toUpperCase()">
+                <button onclick="applyPromo()">Appliquer</button>
+            </div>
+            <div id="promo-result"></div>
+        </div>
+
+    </div>
+
+    <!-- CONFIRMATION -->
+    <div class="confirmation-screen" id="confirmation-screen">
+        <div class="confirm-icon">🎉</div>
+        <h2>Commande confirmée !</h2>
+        <p>Merci pour votre achat sur AfriShop.</p>
+        <p>Vous recevrez une confirmation par SMS et email.</p>
+        <div class="confirm-ref">Référence : <b id="confirm-ref">#AS-2025-00000</b></div>
+        <a href="index.html" class="btn-primary">Continuer mes achats</a>
+    </div>
+
+   <script src="js/main.js"></script>
+<script src="js/checkout.js"></script>
+<script src="js/currency.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriShop — Mon compte</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">Afri<span>Shop</span></a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="product.html">Produits</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-cart">🛒 <span id="cart-count">0</span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ACCOUNT LAYOUT -->
+    <div class="account-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="account-sidebar">
+            <div class="profile-mini">
+                <div class="avatar-lg" id="sidebar-avatar"></div>
+                <div class="profile-name" id="sidebar-name"></div>
+                <div class="profile-email" id="sidebar-email"></div>
+                <div class="profile-level" id="sidebar-level"></div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" onclick="showSection(this, 'dashboard')">
+                    📊 Tableau de bord
+                </div>
+                <div class="nav-item" onclick="showSection(this, 'orders')">
+                    📦 Mes commandes
+                    <span class="nav-badge" id="orders-badge">0</span>
+                </div>
+                <div class="nav-item" onclick="showSection(this, 'tracking')">
+                    🚚 Suivi livraison
+                </div>
+                <div class="nav-item" onclick="showSection(this, 'wishlist')">
+                    ❤️ Mes favoris
+                </div>
+                <div class="nav-item" onclick="showSection(this, 'profile')">
+                    👤 Mon profil
+                </div>
+                <div class="nav-item" onclick="showSection(this, 'fidelite')">
+                    ⭐ Fidélité & points
+                </div>
+                <div class="nav-divider"></div>
+                <div class="nav-item logout" onclick="logout()">
+                    🚪 Déconnexion
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="account-main" id="account-main">
+        </main>
+
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/account.js"></script>
+
+</body>
+</html>

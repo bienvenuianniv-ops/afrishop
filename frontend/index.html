@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriShop — Le meilleur de l'Afrique, livré chez vous</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ================================ -->
+    <!-- NAVBAR                           -->
+    <!-- ================================ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Afri<span>Shop</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="product.html">Produits</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search">🔍</button>
+                <button class="btn-wishlist">❤️</button>
+                <button class="btn-cart">🛒 <span id="cart-count">0</span></button>
+                <a href="account.html" class="btn-account">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================================ -->
+    <!-- HERO                             -->
+    <!-- ================================ -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">🌍 LOCAL & INTERNATIONAL</span>
+            <h1>Le meilleur de l'Afrique,<br><span>livré chez vous</span></h1>
+            <p>Mode · Tech · Beauté · Alimentation — Dakar & partout dans le monde</p>
+            <div class="hero-btns">
+                <a href="product.html" class="btn-primary">Explorer la boutique →</a>
+                <a href="#" class="btn-secondary">Comment ça marche</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- CATEGORIES                       -->
+    <!-- ================================ -->
+    <section class="categories">
+        <div class="container">
+            <h2>Nos catégories</h2>
+            <div class="cats-grid">
+                <div class="cat-card" onclick="filterProducts('tech')">
+                    <div class="cat-icon">📱</div>
+                    <div class="cat-name">Tech & Gadgets</div>
+                </div>
+                <div class="cat-card" onclick="filterProducts('mode')">
+                    <div class="cat-icon">👗</div>
+                    <div class="cat-name">Mode</div>
+                </div>
+                <div class="cat-card" onclick="filterProducts('beaute')">
+                    <div class="cat-icon">💄</div>
+                    <div class="cat-name">Beauté</div>
+                </div>
+                <div class="cat-card" onclick="filterProducts('food')">
+                    <div class="cat-icon">🌿</div>
+                    <div class="cat-name">Alimentation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- PRODUITS                         -->
+    <!-- ================================ -->
+    <section class="products">
+        <div class="container">
+            <h2>Produits tendance</h2>
+            <div class="products-grid" id="products-grid">
+                <!-- Les produits seront chargés ici via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- BANNIERE LIVRAISON               -->
+    <!-- ================================ -->
+    <section class="banner">
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-text">
+                    <h3>Livraison internationale ✈️</h3>
+                    <p>France · USA · Canada · Europe · Afrique</p>
+                </div>
+                <a href="checkout.html" class="btn-primary">Commander maintenant</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================ -->
+    <!-- FOOTER                           -->
+    <!-- ================================ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">Afri<span>Shop</span></div>
+                    <p>Le meilleur de l'Afrique, livré chez vous.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liens utiles</h4>
+                    <ul>
+                        <li><a href="#">À propos</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Paiements acceptés</h4>
+                    <p>📱 Wave · 🟠 Orange Money<br>💳 Visa · 🅿️ PayPal</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Suivez-nous</h4>
+                    <p>📘 Facebook · 📸 Instagram<br>🎵 TikTok · 💬 WhatsApp</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>AfriShop © 2025 — Dakar, Sénégal 🇸🇳</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+<script src="js/currency.js"></script>
+
+</body>
+</html>

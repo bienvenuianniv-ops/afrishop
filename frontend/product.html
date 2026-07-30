@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfriShop — Produits</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">Afri<span>Shop</span></a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="product.html">Produits</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search">🔍</button>
+                <button class="btn-wishlist">❤️</button>
+                <button class="btn-cart">🛒 <span id="cart-count">0</span></button>
+                <a href="account.html" class="btn-account">👤</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SEARCH BAR -->
+    <section class="search-section">
+        <div class="search-inner">
+            <div class="search-bar">
+                <span>🔍</span>
+                <input type="text" id="search-input" placeholder="Rechercher un produit..." oninput="searchProducts(this.value)">
+                <button class="btn-primary" onclick="searchProducts(document.getElementById('search-input').value)">Rechercher</button>
+            </div>
+            <div class="search-suggestions">
+                <span class="sugg" onclick="filterProducts('all')">Tout voir</span>
+                <span class="sugg" onclick="filterProducts('tech')">Tech</span>
+                <span class="sugg" onclick="filterProducts('mode')">Mode</span>
+                <span class="sugg" onclick="filterProducts('beaute')">Beauté</span>
+                <span class="sugg" onclick="filterProducts('food')">Alimentation</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN LAYOUT -->
+    <div class="shop-layout">
+
+        <!-- FILTRES -->
+        <aside class="filters-panel">
+            <div class="filter-section">
+                <div class="filter-title">Catégorie</div>
+                <div class="check-list">
+                    <label><input type="checkbox" onchange="applyFilters()" data-filter="cat" value="tech"> Tech & Gadgets</label>
+                    <label><input type="checkbox" onchange="applyFilters()" data-filter="cat" value="mode"> Mode</label>
+                    <label><input type="checkbox" onchange="applyFilters()" data-filter="cat" value="beaute"> Beauté</label>
+                    <label><input type="checkbox" onchange="applyFilters()" data-filter="cat" value="food"> Alimentation</label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-title">Prix maximum</div>
+                <input type="range" min="0" max="50000" value="50000" step="500" oninput="updatePrice(this.value)" id="price-slider">
+                <div class="price-labels">
+                    <span>0 F</span>
+                    <span id="price-max-label">50 000 F</span>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-title">Origine</div>
+                <div class="check-list">
+                    <label><input type="checkbox" onchange="applyFilters()" data-filter="origin" value="local"> Made in Sénégal</label>
+                    <label><input type="checkbox" onchange="applyFilters()" data-filter="origin" value="import"> Import</label>
+                </div>
+            </div>
+            <button class="btn-primary" style="width:100%;margin-top:10px" onclick="resetFilters()">Réinitialiser</button>
+        </aside>
+
+        <!-- PRODUITS -->
+        <main class="products-area">
+            <div class="results-header">
+                <span id="result-count">0 produits</span>
+                <select onchange="sortProducts(this.value)" class="sort-select">
+                    <option value="default">Trier par : Pertinence</option>
+                    <option value="price-asc">Prix croissant</option>
+                    <option value="price-desc">Prix décroissant</option>
+                </select>
+            </div>
+            <div class="products-grid" id="products-grid"></div>
+        </main>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>AfriShop © 2025 — Dakar, Sénégal 🇸🇳</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+<script src="js/product.js"></script>
+<script src="js/currency.js"></script>
+
+</body>
+</html>

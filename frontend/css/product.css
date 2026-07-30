@@ -1,0 +1,219 @@
+/* ================================ */
+/* AFRISHOP — Page Produits         */
+/* ================================ */
+
+/* Search Section */
+.search-section {
+    background: #1A1A1A;
+    padding: 20px 0;
+    margin-top: 58px;
+    border-bottom: 1px solid #C9A84C33;
+    width: 100%;
+    display: block;
+}
+
+.search-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+}
+
+.search-bar span {
+    font-size: 16px;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #1A1A1A;
+}
+
+.search-suggestions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sugg {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #C9A84C18;
+    color: #C9A84C;
+    border: 1px solid #C9A84C44;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sugg:hover {
+    background: #C9A84C;
+    color: #1A1A1A;
+}
+
+/* ================================ */
+/* SHOP LAYOUT                      */
+/* ================================ */
+.shop-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 28px auto;
+    padding: 0 24px 28px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* ================================ */
+/* FILTERS PANEL                    */
+/* ================================ */
+.filters-panel {
+    width: 220px;
+    min-width: 220px;
+    flex-shrink: 0;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #E0E0E0;
+    position: sticky;
+    top: 80px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.filter-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.filter-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.check-list label {
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.check-list input[type="checkbox"] {
+    accent-color: #C9A84C;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+#price-slider {
+    width: 100%;
+    accent-color: #C9A84C;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.price-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #888;
+}
+
+/* ================================ */
+/* PRODUCTS AREA                    */
+/* ================================ */
+.products-area {
+    flex: 1;
+    min-width: 0;
+}
+
+.results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+#result-count {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+.sort-select {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #E0E0E0;
+    background: #fff;
+    color: #1A1A1A;
+    cursor: pointer;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: #C9A84C;
+}
+
+/* ================================ */
+/* PRODUCTS GRID                    */
+/* ================================ */
+.products-area .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+/* ================================ */
+/* RESPONSIVE                       */
+/* ================================ */
+@media (max-width: 900px) {
+    .shop-layout {
+        flex-direction: column;
+    }
+    .filters-panel {
+        width: 100%;
+        min-width: unset;
+        position: static;
+    }
+    .products-area .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .products-area .products-grid {
+        grid-template-columns: 1fr;
+    }
+}
