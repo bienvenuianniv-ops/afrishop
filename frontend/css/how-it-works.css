@@ -1,0 +1,289 @@
+/* ================================ */
+/* AFRISHOP — Comment ça marche     */
+/* ================================ */
+
+/* Hero */
+.hiw-hero {
+    background: var(--dark);
+    padding: 100px 24px 60px;
+    text-align: center;
+    border-bottom: 1px solid #C9A84C33;
+}
+
+.hiw-hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.hiw-hero h1 span {
+    color: var(--gold);
+}
+
+.hiw-hero p {
+    font-size: 16px;
+    color: #aaa;
+}
+
+/* Steps */
+.hiw-steps {
+    padding: 60px 0;
+}
+
+.hiw-steps h2,
+.hiw-payments h2,
+.hiw-delivery h2,
+.hiw-guarantees h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.step-card {
+    background: #fff;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.step-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px #C9A84C22;
+}
+
+.step-number {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 28px;
+    background: var(--gold);
+    color: #1A1A1A;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    margin-top: 8px;
+}
+
+.step-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.step-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Paiements */
+.hiw-payments {
+    background: #f9f9f9;
+    padding: 60px 0;
+}
+
+.payments-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.payment-card {
+    background: #fff;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.payment-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+}
+
+.payment-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.payment-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.payment-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Livraison */
+.hiw-delivery {
+    padding: 60px 0;
+}
+
+.delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.delivery-card {
+    background: #fff;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.delivery-card:hover {
+    border-color: var(--gold);
+}
+
+.delivery-flag {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.delivery-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.delivery-card p {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.delivery-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold-dark);
+}
+
+/* Garanties */
+.hiw-guarantees {
+    background: var(--dark);
+    padding: 60px 0;
+    border-top: 1px solid #C9A84C33;
+}
+
+.hiw-guarantees h2 {
+    color: #fff;
+}
+
+.guarantees-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.guarantee-card {
+    background: #2E2E2E;
+    border: 1px solid #C9A84C33;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.guarantee-card:hover {
+    border-color: var(--gold);
+}
+
+.guarantee-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.guarantee-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.guarantee-card p {
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.6;
+}
+
+/* CTA */
+.hiw-cta {
+    background: #f9f9f9;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.hiw-cta h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.hiw-cta p {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.hiw-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .steps-grid,
+    .payments-grid,
+    .guarantees-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .delivery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .steps-grid,
+    .payments-grid,
+    .guarantees-grid,
+    .delivery-grid {
+        grid-template-columns: 1fr;
+    }
+}
