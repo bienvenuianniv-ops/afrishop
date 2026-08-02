@@ -23,4 +23,10 @@ pool.connect((err, client, release) => {
     console.log('✅ Base de données PostgreSQL connectée !');
 });
 
+// Sans ce handler, une déconnexion d'un client inactif (courant avec Neon,
+// qui ferme les connexions idle) fait planter tout le process Node.
+pool.on('error', (err) => {
+    console.error('⚠️ Erreur inattendue sur le pool PostgreSQL :', err.message);
+});
+
 module.exports = pool;

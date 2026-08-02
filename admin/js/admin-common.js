@@ -104,6 +104,7 @@ function renderSidebar(activePage) {
         { key: 'dashboard', href: 'index.html', icon: '📊', label: 'Tableau de bord' },
         { key: 'products', href: 'products.html', icon: '📦', label: 'Produits' },
         { key: 'orders', href: 'orders.html', icon: '🧾', label: 'Commandes' },
+        { key: 'customers', href: 'customers.html', icon: '👥', label: 'Clients' },
         { key: 'account', href: 'account.html', icon: '🔑', label: 'Mon compte' }
     ];
 

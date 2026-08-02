@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Clients — AfriShop Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <div id="admin-sidebar-slot"></div>
+
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Clients</h1>
+            </div>
+
+            <div class="toolbar">
+                <select id="filter-role">
+                    <option value="all">Tous les rôles</option>
+                    <option value="client">Clients</option>
+                    <option value="admin">Admins</option>
+                </select>
+                <input type="text" id="filter-search" placeholder="Rechercher (nom, email)...">
+            </div>
+
+            <div class="panel">
+                <div class="table-scroll">
+                    <div id="customers-content"><div class="empty-state">Chargement...</div></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="customer-modal-overlay" style="display:none;">
+        <div class="modal-box" style="max-width:560px;">
+            <div class="modal-title" id="customer-modal-title">Client</div>
+            <div id="customer-modal-content"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeCustomerModal()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin-common.js"></script>
+    <script src="js/admin-customers.js"></script>
+</body>
+</html>
