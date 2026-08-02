@@ -157,4 +157,52 @@ const getProfile = async (req, res) => {
     }
 };
 
-module.exports = { register, login, getProfile };
+// ================================
+// CHANGER LE MOT DE PASSE
+// ================================
+const changePassword = async (req, res) => {
+    const userId = req.user.id;
+    const { current_password, new_password } = req.body;
+
+    if (!current_password || !new_password) {
+        return res.status(400).json({
+            success: false,
+            message: 'Mot de passe actuel et nouveau mot de passe obligatoires'
+        });
+    }
+
+    if (new_password.length < 6) {
+        return res.status(400).json({
+            success: false,
+            message: 'Le nouveau mot de passe doit contenir au moins 6 caractères'
+        });
+    }
+
+    try {
+        const result = await db.query('SELECT mot_de_passe FROM users WHERE id = $1', [userId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Utilisateur non trouvé' });
+        }
+
+        const validPassword = bcrypt.compareSync(current_password, result.rows[0].mot_de_passe);
+        if (!validPassword) {
+            // 400 et non 401 : l'utilisateur est bien authentifié (JWT valide), seule
+            // sa saisie est incorrecte — un 401 déclencherait la déconnexion côté frontend.
+            return res.status(400).json({ success: false, message: 'Mot de passe actuel incorrect' });
+        }
+
+        const hashedPassword = bcrypt.hashSync(new_password, 10);
+        await db.query('UPDATE users SET mot_de_passe = $1 WHERE id = $2', [hashedPassword, userId]);
+
+        res.json({ success: true, message: 'Mot de passe modifié avec succès !' });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur serveur',
+            error: err.message
+        });
+    }
+};
+
+module.exports = { register, login, getProfile, changePassword };
