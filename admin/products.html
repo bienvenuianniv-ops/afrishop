@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Produits — AfriShop Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <div id="admin-sidebar-slot"></div>
+
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Produits</h1>
+                <button class="btn btn-primary" onclick="openProductModal()">+ Ajouter un produit</button>
+            </div>
+
+            <div class="toolbar">
+                <select id="filter-category">
+                    <option value="all">Toutes les catégories</option>
+                    <option value="tech">Tech</option>
+                    <option value="mode">Mode</option>
+                    <option value="beaute">Beauté</option>
+                    <option value="food">Food</option>
+                </select>
+                <input type="text" id="filter-search" placeholder="Rechercher un produit...">
+            </div>
+
+            <div class="panel">
+                <div class="table-scroll">
+                    <div id="products-content"><div class="empty-state">Chargement...</div></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="product-modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-title" id="product-modal-title">Ajouter un produit</div>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="form-group">
+                    <label>Nom</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="product-description"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prix (FCFA)</label>
+                        <input type="number" id="product-price" min="0" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" id="product-stock" min="0" step="1" value="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        <select id="product-category" required>
+                            <option value="tech">Tech</option>
+                            <option value="mode">Mode</option>
+                            <option value="beaute">Beauté</option>
+                            <option value="food">Food</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Emoji</label>
+                        <input type="text" id="product-emoji" maxlength="4" placeholder="📦">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Origine</label>
+                        <input type="text" id="product-origin" placeholder="Ex: Dakar, Import...">
+                    </div>
+                    <div class="form-group">
+                        <label>Badge</label>
+                        <input type="text" id="product-badge" placeholder="Ex: Nouveau, Promo...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>URL image (optionnel)</label>
+                    <input type="text" id="product-image" placeholder="images/mon-produit.jpg">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin-common.js"></script>
+    <script src="js/admin-products.js"></script>
+</body>
+</html>

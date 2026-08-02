@@ -1,0 +1,348 @@
+/* ================================ */
+/* AFRISHOP ADMIN — Styles          */
+/* ================================ */
+
+:root {
+    --gold: #C9A84C;
+    --gold-dark: #A07830;
+    --dark: #1A1A1A;
+    --dark2: #232323;
+    --white: #FFFFFF;
+    --gray: #F5F5F5;
+    --gray-dark: #888888;
+    --text: #1A1A1A;
+    --text-light: #666666;
+    --border: #E0E0E0;
+    --success: #1D9E75;
+    --error: #E24B4A;
+    --warning: #C98A2C;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--gray);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ---- Layout ---- */
+.admin-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+}
+
+.admin-main {
+    padding: 32px 40px;
+    max-width: 1200px;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.admin-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* ---- Sidebar ---- */
+.admin-sidebar {
+    background: var(--dark);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.admin-brand {
+    padding: 22px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #C9A84C33;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-brand strong { color: var(--gold); }
+.admin-brand-emoji { font-size: 20px; }
+
+.admin-nav {
+    flex: 1;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #ccc;
+    transition: background 0.15s, color 0.15s;
+}
+
+.admin-nav-link:hover { background: #ffffff10; color: var(--white); }
+
+.admin-nav-link.active {
+    background: #C9A84C1f;
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.admin-sidebar-footer {
+    padding: 16px 20px 20px;
+    border-top: 1px solid #C9A84C33;
+}
+
+.admin-user-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.admin-user-email { font-size: 11px; color: #999; margin-bottom: 12px; word-break: break-all; }
+
+.admin-logout-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #C9A84C55;
+    color: var(--gold);
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    transition: background 0.15s;
+}
+.admin-logout-btn:hover { background: #C9A84C18; }
+
+/* ---- Cards / stats ---- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+
+.stat-card-label {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.stat-card-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.stat-card-value.gold { color: var(--gold-dark); }
+
+.panel {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 24px;
+}
+
+.panel-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+/* ---- Tables ---- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 10px 12px;
+    color: var(--text-light);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+}
+
+.admin-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.admin-table tr:hover td { background: #FAFAFA; }
+
+.table-scroll { overflow-x: auto; }
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* ---- Badges ---- */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-pending, .badge-processing { background: #C98A2C1f; color: var(--warning); }
+.badge-transit { background: #2C6AC91f; color: #2C6AC9; }
+.badge-delivered { background: #1D9E751f; color: var(--success); }
+.badge-cancelled { background: #E24B4A1f; color: var(--error); }
+.badge-low-stock { background: #E24B4A1f; color: var(--error); }
+
+/* ---- Buttons ---- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.85; }
+
+.btn-primary { background: var(--dark); color: var(--gold); }
+.btn-secondary { background: var(--gray); color: var(--text); border: 1px solid var(--border); }
+.btn-danger { background: #E24B4A1f; color: var(--error); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+select.status-select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    background: var(--white);
+}
+
+/* ---- Forms / Modal ---- */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.form-group label { font-size: 12px; font-weight: 600; color: var(--text-light); }
+.form-group input, .form-group select, .form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+}
+.form-group textarea { resize: vertical; min-height: 70px; }
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: #00000066;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-box {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 26px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-title { font-size: 17px; font-weight: 700; margin-bottom: 18px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+/* ---- Toolbar / filters ---- */
+.toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.toolbar select, .toolbar input {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+/* ---- Login page ---- */
+.admin-login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark);
+    padding: 20px;
+}
+
+.admin-login-box {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 40px 34px;
+    max-width: 380px;
+    width: 100%;
+}
+
+.admin-login-brand {
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.admin-login-brand .emoji { font-size: 32px; }
+.admin-login-brand h1 { font-size: 18px; margin-top: 8px; }
+.admin-login-brand p { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+.admin-login-box .form-group { margin-bottom: 16px; }
+.admin-login-box .btn { width: 100%; justify-content: center; padding: 12px; }
+.login-error {
+    background: #E24B4A1f;
+    color: var(--error);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 14px;
+    display: none;
+}
+.login-error.show { display: block; }
+
+@media (max-width: 768px) {
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-sidebar { position: relative; height: auto; }
+    .admin-main { padding: 20px; }
+    .form-row { grid-template-columns: 1fr; }
+}

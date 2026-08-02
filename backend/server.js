@@ -35,8 +35,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir les fichiers statiques du frontend
+// Servir les fichiers statiques du frontend et de l'espace admin
 app.use(express.static(path.join(__dirname, '../frontend')));
+app.use('/admin', express.static(path.join(__dirname, '../admin')));
 
 // ================================
 // ROUTES API
@@ -44,10 +45,12 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const productsRoutes = require('./routes/products');
 const ordersRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 
 app.use('/api/products', productsRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 // ================================
 // ROUTE DE TEST

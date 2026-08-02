@@ -207,9 +207,50 @@ const getOrderByReference = async (req, res) => {
     }
 };
 
+// ================================
+// CHANGER LE STATUT D'UNE COMMANDE (admin)
+// ================================
+const VALID_STATUSES = ['pending', 'processing', 'transit', 'delivered', 'cancelled'];
+
+const updateOrderStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!VALID_STATUSES.includes(status)) {
+        return res.status(400).json({
+            success: false,
+            message: `Statut invalide (valeurs acceptées : ${VALID_STATUSES.join(', ')})`
+        });
+    }
+
+    try {
+        const result = await db.query(
+            'UPDATE orders SET status = $1 WHERE id = $2 RETURNING *',
+            [status, id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Commande non trouvée' });
+        }
+
+        res.json({
+            success: true,
+            message: 'Statut mis à jour avec succès !',
+            order: result.rows[0]
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur lors de la mise à jour du statut',
+            error: err.message
+        });
+    }
+};
+
 module.exports = {
     createOrder,
     getAllOrders,
     getMyOrders,
-    getOrderByReference
+    getOrderByReference,
+    updateOrderStatus
 };

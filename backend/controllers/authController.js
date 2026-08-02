@@ -112,7 +112,8 @@ const login = async (req, res) => {
                 nom: user.nom,
                 email: user.email,
                 points: user.points,
-                niveau: user.niveau
+                niveau: user.niveau,
+                role: user.role
             }
         });
     } catch (err) {

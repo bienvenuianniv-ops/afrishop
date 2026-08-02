@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Connexion Admin — AfriShop</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-login-wrap">
+        <div class="admin-login-box">
+            <div class="admin-login-brand">
+                <div class="emoji">🌍</div>
+                <h1>AfriShop Admin</h1>
+                <p>Espace réservé à l'équipe</p>
+            </div>
+
+            <div class="login-error" id="login-error"></div>
+
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="login-password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin-common.js"></script>
+    <script src="js/admin-login.js"></script>
+</body>
+</html>

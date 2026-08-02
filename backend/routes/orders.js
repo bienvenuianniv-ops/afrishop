@@ -8,7 +8,8 @@ const {
     createOrder,
     getAllOrders,
     getMyOrders,
-    getOrderByReference
+    getOrderByReference,
+    updateOrderStatus
 } = require('../controllers/ordersController');
 const auth = require('../middleware/auth');
 const requireAdmin = require('../middleware/requireAdmin');
@@ -24,6 +25,9 @@ router.get('/mine', auth, getMyOrders);
 
 // GET toutes les commandes — réservé aux admins — /api/orders
 router.get('/', auth, requireAdmin, getAllOrders);
+
+// PATCH changer le statut d'une commande — réservé aux admins — /api/orders/6/status
+router.patch('/:id/status', auth, requireAdmin, updateOrderStatus);
 
 // GET une commande par référence — /api/orders/:reference
 router.get('/:reference', orderLookupLimiter, getOrderByReference);
