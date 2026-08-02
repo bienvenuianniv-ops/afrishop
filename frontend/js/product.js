@@ -2,9 +2,7 @@
 // AFRISHOP — Page Produits JS
 // ================================
 
-const API_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000/api'
-    : 'https://afrishop-backend-q1fr.onrender.com/api';
+
 
 let searchTerm = '';
 let maxPrice = 50000;
