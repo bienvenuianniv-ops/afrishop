@@ -37,13 +37,13 @@ const register = async (req, res) => {
         const result = await db.query(`
             INSERT INTO users (prenom, nom, email, telephone, mot_de_passe, pays, adresse)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING id, prenom, nom, email
+            RETURNING id, prenom, nom, email, role
         `, [prenom, nom, email, telephone, hashedPassword, pays, adresse]);
 
         const user = result.rows[0];
 
         const token = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, role: user.role },
             process.env.JWT_SECRET || 'afrishop_secret',
             { expiresIn: '7d' }
         );
@@ -97,7 +97,7 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, role: user.role },
             process.env.JWT_SECRET || 'afrishop_secret',
             { expiresIn: '7d' }
         );
