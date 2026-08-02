@@ -1,5 +1,5 @@
 // ================================
-// AFRISHOP — Products Controller
+// AFRISHOP — Products Controller (PostgreSQL)
 // ================================
 
 const db = require('../config/database');
@@ -11,7 +11,6 @@ const productEmojis = {
     9: '🧼', 10: '🌺', 11: '🌶️'
 };
 
-// Ajouter les emojis aux produits
 const addEmojis = (products) => {
     return products.map(p => ({
         ...p,
@@ -22,61 +21,59 @@ const addEmojis = (products) => {
 // ================================
 // GET TOUS LES PRODUITS
 // ================================
-const getAllProducts = (req, res) => {
+const getAllProducts = async (req, res) => {
     const { category, search, maxPrice } = req.query;
 
     let query = 'SELECT * FROM products WHERE 1=1';
     let params = [];
+    let paramCount = 1;
 
     if (category && category !== 'all') {
-        query += ' AND category = ?';
+        query += ` AND category = $${paramCount}`;
         params.push(category);
+        paramCount++;
     }
 
     if (search) {
-        query += ' AND (name LIKE ? OR description LIKE ? OR badge LIKE ?)';
+        query += ` AND (name ILIKE $${paramCount} OR description ILIKE $${paramCount + 1} OR badge ILIKE $${paramCount + 2})`;
         params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+        paramCount += 3;
     }
 
     if (maxPrice) {
-        query += ' AND price <= ?';
+        query += ` AND price <= $${paramCount}`;
         params.push(maxPrice);
+        paramCount++;
     }
 
     query += ' ORDER BY created_at DESC';
 
-    db.query(query, params, (err, results) => {
-        if (err) {
-            console.error('Erreur products :', err.message);
-            return res.status(500).json({
-                success: false,
-                message: 'Erreur serveur'
-            });
-        }
+    try {
+        const result = await db.query(query, params);
         res.json({
             success: true,
-            count: results.length,
-            products: addEmojis(results)
+            count: result.rows.length,
+            products: addEmojis(result.rows)
         });
-    });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur serveur',
+            error: err.message
+        });
+    }
 };
 
 // ================================
 // GET UN PRODUIT PAR ID
 // ================================
-const getProductById = (req, res) => {
+const getProductById = async (req, res) => {
     const { id } = req.params;
 
-    db.query('SELECT * FROM products WHERE id = ?', [id], (err, results) => {
-        if (err) {
-            console.error('Erreur products :', err.message);
-            return res.status(500).json({
-                success: false,
-                message: 'Erreur serveur'
-            });
-        }
+    try {
+        const result = await db.query('SELECT * FROM products WHERE id = $1', [id]);
 
-        if (results.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Produit non trouvé'
@@ -85,35 +82,40 @@ const getProductById = (req, res) => {
 
         res.json({
             success: true,
-            product: addEmojis([results[0]])[0]
+            product: addEmojis([result.rows[0]])[0]
         });
-    });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur serveur',
+            error: err.message
+        });
+    }
 };
 
 // ================================
 // GET PRODUITS PAR CATEGORIE
 // ================================
-const getProductsByCategory = (req, res) => {
+const getProductsByCategory = async (req, res) => {
     const { category } = req.params;
 
-    db.query(
-        'SELECT * FROM products WHERE category = ? ORDER BY created_at DESC',
-        [category],
-        (err, results) => {
-            if (err) {
-                return res.status(500).json({
-                    success: false,
-                    message: 'Erreur serveur',
-                    error: err.message
-                });
-            }
-            res.json({
-                success: true,
-                count: results.length,
-                products: addEmojis(results)
-            });
-        }
-    );
+    try {
+        const result = await db.query(
+            'SELECT * FROM products WHERE category = $1 ORDER BY created_at DESC',
+            [category]
+        );
+        res.json({
+            success: true,
+            count: result.rows.length,
+            products: addEmojis(result.rows)
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur serveur',
+            error: err.message
+        });
+    }
 };
 
 module.exports = {

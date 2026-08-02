@@ -1,5 +1,5 @@
 // ================================
-// AFRISHOP — Auth Controller
+// AFRISHOP — Auth Controller (PostgreSQL)
 // ================================
 
 const db = require('../config/database');
@@ -9,10 +9,9 @@ const jwt = require('jsonwebtoken');
 // ================================
 // INSCRIPTION
 // ================================
-const register = (req, res) => {
+const register = async (req, res) => {
     const { prenom, nom, email, telephone, mot_de_passe, pays, adresse } = req.body;
 
-    // Validation
     if (!prenom || !nom || !email || !mot_de_passe) {
         return res.status(400).json({
             success: false,
@@ -20,24 +19,11 @@ const register = (req, res) => {
         });
     }
 
-    if (mot_de_passe.length < 6) {
-        return res.status(400).json({
-            success: false,
-            message: 'Le mot de passe doit contenir au moins 6 caractères'
-        });
-    }
+    try {
+        // Vérifier si email existe déjà
+        const existing = await db.query('SELECT id FROM users WHERE email = $1', [email]);
 
-    // Vérifier si email existe déjà
-    db.query('SELECT id FROM users WHERE email = ?', [email], (err, results) => {
-        if (err) {
-            console.error('Erreur register (SELECT) :', err.message);
-            return res.status(500).json({
-                success: false,
-                message: 'Erreur serveur'
-            });
-        }
-
-        if (results.length > 0) {
+        if (existing.rows.length > 0) {
             return res.status(400).json({
                 success: false,
                 message: 'Cet email est déjà utilisé'
@@ -48,51 +34,41 @@ const register = (req, res) => {
         const hashedPassword = bcrypt.hashSync(mot_de_passe, 10);
 
         // Insérer l'utilisateur
-        const query = `
+        const result = await db.query(`
             INSERT INTO users (prenom, nom, email, telephone, mot_de_passe, pays, adresse)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        `;
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING id, prenom, nom, email
+        `, [prenom, nom, email, telephone, hashedPassword, pays, adresse]);
 
-        db.query(query, [prenom, nom, email, telephone, hashedPassword, pays, adresse],
-            (err2, result) => {
-                if (err2) {
-                    console.error('Erreur register (INSERT) :', err2.message);
-                    return res.status(500).json({
-                        success: false,
-                        message: 'Erreur lors de la création du compte'
-                    });
-                }
+        const user = result.rows[0];
 
-                // Créer le token JWT
-                const token = jwt.sign(
-                    { id: result.insertId, email, role: 'client' },
-                    process.env.JWT_SECRET || 'afrishop_secret',
-                    { expiresIn: '7d' }
-                );
-
-                res.status(201).json({
-                    success: true,
-                    message: 'Compte créé avec succès !',
-                    token,
-                    user: {
-                        id: result.insertId,
-                        prenom,
-                        nom,
-                        email
-                    }
-                });
-            }
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET || 'afrishop_secret',
+            { expiresIn: '7d' }
         );
-    });
+
+        res.status(201).json({
+            success: true,
+            message: 'Compte créé avec succès !',
+            token,
+            user
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur lors de la création du compte',
+            error: err.message
+        });
+    }
 };
 
 // ================================
 // CONNEXION
 // ================================
-const login = (req, res) => {
+const login = async (req, res) => {
     const { email, mot_de_passe } = req.body;
 
-    // Validation
     if (!email || !mot_de_passe) {
         return res.status(400).json({
             success: false,
@@ -100,26 +76,17 @@ const login = (req, res) => {
         });
     }
 
-    // Chercher l'utilisateur
-    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-        if (err) {
-            console.error('Erreur login (SELECT) :', err.message);
-            return res.status(500).json({
-                success: false,
-                message: 'Erreur serveur'
-            });
-        }
+    try {
+        const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
 
-        if (results.length === 0) {
+        if (result.rows.length === 0) {
             return res.status(401).json({
                 success: false,
                 message: 'Email ou mot de passe incorrect'
             });
         }
 
-        const user = results[0];
-
-        // Vérifier le mot de passe
+        const user = result.rows[0];
         const validPassword = bcrypt.compareSync(mot_de_passe, user.mot_de_passe);
 
         if (!validPassword) {
@@ -129,9 +96,8 @@ const login = (req, res) => {
             });
         }
 
-        // Créer le token JWT
         const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role },
+            { id: user.id, email: user.email },
             process.env.JWT_SECRET || 'afrishop_secret',
             { expiresIn: '7d' }
         );
@@ -149,74 +115,45 @@ const login = (req, res) => {
                 niveau: user.niveau
             }
         });
-    });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur serveur',
+            error: err.message
+        });
+    }
 };
 
 // ================================
 // GET PROFIL
 // ================================
-const getProfile = (req, res) => {
+const getProfile = async (req, res) => {
     const userId = req.user.id;
 
-    db.query(
-        'SELECT id, prenom, nom, email, telephone, pays, adresse, points, niveau FROM users WHERE id = ?',
-        [userId],
-        (err, results) => {
-            if (err) {
-                console.error('Erreur getProfile :', err.message);
-                return res.status(500).json({
-                    success: false,
-                    message: 'Erreur serveur'
-                });
-            }
+    try {
+        const result = await db.query(
+            'SELECT id, prenom, nom, email, telephone, pays, adresse, points, niveau FROM users WHERE id = $1',
+            [userId]
+        );
 
-            if (results.length === 0) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Utilisateur non trouvé'
-                });
-            }
-
-            res.json({
-                success: true,
-                user: results[0]
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Utilisateur non trouvé'
             });
         }
-    );
-};
 
-// ================================
-// METTRE À JOUR LE PROFIL
-// ================================
-const updateProfile = (req, res) => {
-    const userId = req.user.id;
-    const { prenom, nom, telephone, pays, adresse } = req.body;
-
-    if (!prenom || !nom) {
-        return res.status(400).json({
+        res.json({
+            success: true,
+            user: result.rows[0]
+        });
+    } catch (err) {
+        res.status(500).json({
             success: false,
-            message: 'Prénom et nom sont obligatoires'
+            message: 'Erreur serveur',
+            error: err.message
         });
     }
-
-    db.query(
-        'UPDATE users SET prenom = ?, nom = ?, telephone = ?, pays = ?, adresse = ? WHERE id = ?',
-        [prenom, nom, telephone, pays, adresse, userId],
-        (err) => {
-            if (err) {
-                console.error('Erreur updateProfile :', err.message);
-                return res.status(500).json({
-                    success: false,
-                    message: 'Erreur serveur'
-                });
-            }
-
-            res.json({
-                success: true,
-                message: 'Profil mis à jour avec succès !'
-            });
-        }
-    );
 };
 
-module.exports = { register, login, getProfile, updateProfile };
+module.exports = { register, login, getProfile };

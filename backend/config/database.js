@@ -1,30 +1,26 @@
 // ================================
-// AFRISHOP — Configuration Base de données
+// AFRISHOP — Configuration Base de données PostgreSQL
 // ================================
 
-const mysql = require('mysql2');
+const { Pool } = require('pg');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-// Pool de connexions : reconnexion automatique, résiste aux coupures réseau
-const db = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'afrishop_db',
-    charset: 'utf8mb4',
-    connectionLimit: 10,
-    waitForConnections: true
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
-// Vérifier la connexion au démarrage
-db.query('SELECT 1', (err) => {
+pool.connect((err, client, release) => {
     if (err) {
         console.error('❌ Erreur connexion base de données :', err.message);
         return;
     }
-    console.log('✅ Base de données connectée !');
+    release();
+    console.log('✅ Base de données PostgreSQL connectée !');
 });
 
-module.exports = db;
+module.exports = pool;
