@@ -76,14 +76,17 @@ const createOrder = async (req, res) => {
         const reference = '#AS-' + new Date().getFullYear() + '-' +
             crypto.randomBytes(6).toString('hex');
 
+        // Lier la commande au compte connecté, s'il y en a un (checkout invité toujours possible)
+        const userId = req.user ? req.user.id : null;
+
         // Insérer la commande
         const orderResult = await db.query(`
             INSERT INTO orders
-            (reference, prenom, nom, email, telephone, pays, adresse,
+            (reference, user_id, prenom, nom, email, telephone, pays, adresse,
              subtotal, delivery_price, discount, total, payment_method, delivery_method)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
             RETURNING id
-        `, [reference, prenom, nom, email, telephone,
+        `, [reference, userId, prenom, nom, email, telephone,
             pays, adresse, subtotal, safeDeliveryPrice,
             safeDiscount, total, payment_method, delivery_method]);
 
@@ -124,6 +127,33 @@ const getAllOrders = async (req, res) => {
             GROUP BY o.id
             ORDER BY o.created_at DESC
         `);
+        res.json({
+            success: true,
+            count: result.rows.length,
+            orders: result.rows
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur serveur',
+            error: err.message
+        });
+    }
+};
+
+// ================================
+// GET MES COMMANDES (utilisateur connecté)
+// ================================
+const getMyOrders = async (req, res) => {
+    try {
+        const result = await db.query(`
+            SELECT o.*, COUNT(oi.id) as items_count
+            FROM orders o
+            LEFT JOIN order_items oi ON o.id = oi.order_id
+            WHERE o.user_id = $1
+            GROUP BY o.id
+            ORDER BY o.created_at DESC
+        `, [req.user.id]);
         res.json({
             success: true,
             count: result.rows.length,
@@ -180,5 +210,6 @@ const getOrderByReference = async (req, res) => {
 module.exports = {
     createOrder,
     getAllOrders,
+    getMyOrders,
     getOrderByReference
 };
