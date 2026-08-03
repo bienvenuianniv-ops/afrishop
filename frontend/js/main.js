@@ -64,18 +64,19 @@ function updateCartCount() {
     countEl.textContent = count;
 }
 
-function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
+function addToCart(productId, quantity = 1, { productData = null, silent = false } = {}) {
+    const product = productData || products.find(p => p.id === productId);
+    if (!product) return false;
     const existing = cart.find(item => item.id === productId);
     if (existing) {
-        existing.quantity += 1;
+        existing.quantity += quantity;
     } else {
-        cart.push({ ...product, quantity: 1 });
+        cart.push({ ...product, quantity });
     }
     localStorage.setItem('afrishop_cart', JSON.stringify(cart));
     updateCartCount();
-    showNotif(`✓ ${product.name} ajouté au panier !`);
+    if (!silent) showNotif(`✓ ${product.name} ajouté au panier !`);
+    return true;
 }
 
 // ================================

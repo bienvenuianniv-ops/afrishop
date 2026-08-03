@@ -125,7 +125,7 @@ const sections = {
                         <div class="product-name">${escapeHtml(p.name)}</div>
                         <div class="product-origin">${escapeHtml(p.origin)}</div>
                         <div class="product-footer">
-                            <span class="product-price">${Number(p.price).toLocaleString()} F</span>
+                            <span class="product-price">${convertPrice(Number(p.price))}</span>
                             <button class="btn-add" onclick="addToCart(${p.id})">+</button>
                         </div>
                         <span class="product-badge">${escapeHtml(p.badge)}</span>

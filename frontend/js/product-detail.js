@@ -104,7 +104,7 @@ async function loadRelated() {
                         <div class="product-name">${escapeHtml(p.name)}</div>
                         <div class="product-origin">${escapeHtml(p.origin)}</div>
                         <div class="product-footer">
-                            <span class="product-price">${parseInt(p.price).toLocaleString()} F</span>
+                            <span class="product-price">${convertPrice(parseInt(p.price))}</span>
                             <button class="btn-add" onclick="event.stopPropagation(); addToCart(${p.id})">+</button>
                         </div>
                         <span class="product-badge">${escapeHtml(p.badge)}</span>
@@ -155,10 +155,10 @@ function changeQty(delta) {
 // ================================
 function addToCartDetail() {
     if (!currentProduct) return;
-    for (let i = 0; i < qty; i++) {
-        addToCart(currentProduct.id);
-    }
-    showNotif(`✓ ${qty}x ${currentProduct.name} ajouté au panier !`);
+    const added = addToCart(currentProduct.id, qty, { productData: currentProduct, silent: true });
+    showNotif(added
+        ? `✓ ${qty}x ${currentProduct.name} ajouté au panier !`
+        : `⚠️ Impossible d'ajouter ${currentProduct.name} au panier`);
 }
 
 // ================================
