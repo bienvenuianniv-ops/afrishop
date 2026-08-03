@@ -4,6 +4,7 @@
 
 let deliveryPrice = 0;
 let discount = 0;
+let appliedPromoCode = null;
 
 const promoCodes = {
     'BIENVENUE20': { type: 'percent', value: 20, label: '20% de réduction' },
@@ -170,11 +171,13 @@ function applyPromo() {
         } else {
             discount = promo.value;
         }
+        appliedPromoCode = code;
         result.className = 'success';
         result.textContent = `✓ Code ${code} appliqué — ${promo.label} !`;
         updateSummary();
     } else {
         discount = 0;
+        appliedPromoCode = null;
         result.className = 'error';
         result.textContent = '✗ Code invalide. Essayez : BIENVENUE20';
         updateSummary();
@@ -210,7 +213,7 @@ async function confirmOrder() {
         pays, adresse,
         subtotal,
         delivery_price: deliveryPrice,
-        discount,
+        promo_code: appliedPromoCode,
         total: subtotal + deliveryPrice - discount,
         payment_method: document.querySelector('.pay-option.selected .pay-name')?.textContent || 'Wave',
         delivery_method: document.querySelector('.delivery-opt.selected .delivery-opt-name')?.textContent || 'Livraison',

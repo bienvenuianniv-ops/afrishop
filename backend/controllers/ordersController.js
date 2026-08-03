@@ -5,6 +5,15 @@
 const db = require('../config/database');
 const crypto = require('crypto');
 
+// Codes promo valides — même liste que frontend/js/checkout.js.
+// Source de vérité pour le calcul de la remise : jamais le montant envoyé par le client.
+const PROMO_CODES = {
+    'BIENVENUE20': { type: 'percent', value: 20 },
+    'AFRIQUE10': { type: 'percent', value: 10 },
+    'DAKAR500': { type: 'fixed', value: 500 },
+    'DIASPORA15': { type: 'percent', value: 15 },
+};
+
 // ================================
 // CRÉER UNE COMMANDE
 // ================================
@@ -12,7 +21,7 @@ const createOrder = async (req, res) => {
     const {
         prenom, nom, email, telephone,
         pays, adresse,
-        delivery_price, discount,
+        delivery_price, promo_code,
         payment_method, delivery_method,
         items
     } = req.body;
@@ -32,11 +41,17 @@ const createOrder = async (req, res) => {
         });
     }
 
+    let client;
+
     try {
-        // Recalculer les prix côté serveur à partir du catalogue —
-        // ne jamais faire confiance aux prix envoyés par le client
-        const productsResult = await db.query(
-            'SELECT id, name, price FROM products WHERE id = ANY($1)',
+        client = await db.connect();
+        await client.query('BEGIN');
+
+        // Recalculer les prix côté serveur à partir du catalogue, et verrouiller les lignes
+        // pour empêcher deux commandes concurrentes de survendre le même stock —
+        // ne jamais faire confiance aux prix/stock envoyés par le client
+        const productsResult = await client.query(
+            'SELECT id, name, price, stock FROM products WHERE id = ANY($1) FOR UPDATE',
             [productIds]
         );
 
@@ -52,9 +67,18 @@ const createOrder = async (req, res) => {
             const product = productById[id];
 
             if (!product || !Number.isInteger(quantity) || quantity <= 0) {
+                await client.query('ROLLBACK');
                 return res.status(400).json({
                     success: false,
                     message: 'Un article du panier est invalide ou n\'existe plus'
+                });
+            }
+
+            if (quantity > product.stock) {
+                await client.query('ROLLBACK');
+                return res.status(400).json({
+                    success: false,
+                    message: `Stock insuffisant pour "${product.name}" (disponible : ${product.stock})`
                 });
             }
 
@@ -66,9 +90,16 @@ const createOrder = async (req, res) => {
         let safeDeliveryPrice = Number(delivery_price);
         if (!Number.isFinite(safeDeliveryPrice) || safeDeliveryPrice < 0) safeDeliveryPrice = 0;
 
-        let safeDiscount = Number(discount);
-        if (!Number.isFinite(safeDiscount) || safeDiscount < 0) safeDiscount = 0;
-        if (safeDiscount > subtotal) safeDiscount = subtotal;
+        // Remise calculée uniquement à partir d'un code promo valide, jamais d'un montant fourni par le client
+        let safeDiscount = 0;
+        const normalizedPromo = typeof promo_code === 'string' ? promo_code.trim().toUpperCase() : '';
+        const promo = PROMO_CODES[normalizedPromo];
+        if (promo) {
+            safeDiscount = promo.type === 'percent'
+                ? Math.round(subtotal * promo.value / 100)
+                : promo.value;
+            if (safeDiscount > subtotal) safeDiscount = subtotal;
+        }
 
         const total = subtotal + safeDeliveryPrice - safeDiscount;
 
@@ -80,7 +111,7 @@ const createOrder = async (req, res) => {
         const userId = req.user ? req.user.id : null;
 
         // Insérer la commande
-        const orderResult = await db.query(`
+        const orderResult = await client.query(`
             INSERT INTO orders
             (reference, user_id, prenom, nom, email, telephone, pays, adresse,
              subtotal, delivery_price, discount, total, payment_method, delivery_method)
@@ -92,13 +123,20 @@ const createOrder = async (req, res) => {
 
         const orderId = orderResult.rows[0].id;
 
-        // Insérer les articles (prix et noms vérifiés côté serveur)
+        // Insérer les articles (prix et noms vérifiés côté serveur) et décrémenter le stock
         for (const item of verifiedItems) {
-            await db.query(`
+            await client.query(`
                 INSERT INTO order_items (order_id, product_id, name, price, quantity)
                 VALUES ($1, $2, $3, $4, $5)
             `, [orderId, item.id, item.name, item.price, item.quantity]);
+
+            await client.query(
+                'UPDATE products SET stock = stock - $1 WHERE id = $2',
+                [item.quantity, item.id]
+            );
         }
+
+        await client.query('COMMIT');
 
         res.status(201).json({
             success: true,
@@ -107,11 +145,16 @@ const createOrder = async (req, res) => {
             orderId: orderId
         });
     } catch (err) {
+        if (client) {
+            try { await client.query('ROLLBACK'); } catch (_) { /* transaction already aborted */ }
+        }
         res.status(500).json({
             success: false,
             message: 'Erreur lors de la création de la commande',
             error: err.message
         });
+    } finally {
+        if (client) client.release();
     }
 };
 
