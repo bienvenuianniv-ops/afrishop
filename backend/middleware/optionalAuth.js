@@ -15,7 +15,7 @@ const optionalAuth = (req, res, next) => {
     }
 
     try {
-        req.user = jwt.verify(token, process.env.JWT_SECRET || 'afrishop_secret');
+        req.user = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
         req.user = null;
     }

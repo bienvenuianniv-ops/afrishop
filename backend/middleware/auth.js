@@ -17,10 +17,7 @@ const auth = (req, res, next) => {
 
     try {
         // Vérifier le token
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET || 'afrishop_secret'
-        );
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (err) {

@@ -10,6 +10,13 @@ const path = require('path');
 // Charger les variables d'environnement
 dotenv.config();
 
+// Sans secret JWT, tous les tokens seraient signés/vérifiés avec une valeur
+// devinable — refuser de démarrer plutôt que de servir une auth cassée.
+if (!process.env.JWT_SECRET) {
+    console.error('❌ JWT_SECRET manquant. Définissez-le dans les variables d\'environnement avant de démarrer le serveur.');
+    process.exit(1);
+}
+
 // Créer l'application Express
 const app = express();
 
